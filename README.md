@@ -6,7 +6,7 @@
 * fastapi 붙여서 웹서버 구현하기 
 
 
-### Tenriton 인퍼런스 서버 ###
+### Triton 인퍼런스 서버 ###
 
 * https://github.com/triton-inference-server/server
 
