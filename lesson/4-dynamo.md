@@ -28,4 +28,5 @@ Triton Inference Server의 후속 기술로, 대규모 분산 환경에서 생�
 
 
 ## 레퍼런스 ##
-* * https://github.com/ai-dynamo/dynamo
+* https://github.com/ai-dynamo/dynamo
+* [NVIDIA Dynamo: 차세대 분산 추론 프레임워크 리뷰](https://www.sktenterprise.com/bizInsight/blogDetail/dev/14476)
