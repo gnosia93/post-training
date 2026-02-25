@@ -136,7 +136,9 @@ metadata:
   name: "${CLUSTER_NAME}"
   version: "${K8S_VERSION}"
   region: "${AWS_REGION}"
-
+  tags:
+    karpenter.sh/discovery: "${CLUSTER_NAME}"    # 이 태그가 있어야 Karpenter가 서브넷/보안그룹을 자동으로 찾습니다.
+  
 vpc:
   id: "${VPC_ID}"                    
   subnets:
@@ -173,13 +175,7 @@ iam:
 
 karpenter:
   version: "${KARPENTER_VERSION}"
-  createServiceAccount: true 				 # Karpenter 전용 서비스 계정 및 IRSA 생성
-
-# 노드들이 Karpenter에 의해 생성될 때 가질 권한을 위해
-# eksctl이 생성하는 Karpenter 전용 노드 역할을 사용하도록 태그를 설정합니다.
-metadata:
-  tags:
-    karpenter.sh/discovery: "${CLUSTER_NAME}"
+  createServiceAccount: true 				 # IRSA를 자동으로 생성하여 Karpenter Pod에 할당
 EOF
 ```
 ```
