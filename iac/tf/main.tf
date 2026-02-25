@@ -8,9 +8,6 @@ data "aws_availability_zones" "available" {
 
 data "aws_region" "current" {}
 
-# ------------------------------------------------
-# VPC 및 네트워크 구성
-# ------------------------------------------------
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
@@ -25,25 +22,27 @@ resource "aws_internet_gateway" "gw" {
 }
 
 resource "aws_subnet" "public" {
-  count                   = length(data.aws_availability_zones.available.names)
+#  count                   = length(data.aws_availability_zones.available.names)
+  count                   = 2
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index)
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   vpc_id                  = aws_vpc.main.id
   map_public_ip_on_launch = true
   tags = { 
-      Name = "TOE-pub-subnet-${count.index + 1}"
+      Name = "INF-pub-subnet-${count.index + 1}"
       "kubernetes.io/role/elb" = "1"
       "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   }
 }
 
 resource "aws_subnet" "private" {
-  count             = length(data.aws_availability_zones.available.names)
+#  count             = length(data.aws_availability_zones.available.names)
+  count             = 2
   cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index + 10)
   availability_zone = data.aws_availability_zones.available.names[count.index]
   vpc_id            = aws_vpc.main.id
   tags = { 
-    Name = "TOE-priv-subnet-${count.index + 1}"
+    Name = "INF-priv-subnet-${count.index + 1}"
     "karpenter.sh/discovery" = var.cluster_name
     "kubernetes.io/role/internal-elb" = "1"
   }
@@ -92,7 +91,7 @@ resource "aws_route_table_association" "private" {
 # ------------------------------------------------
 
 resource "aws_iam_role" "eks_creator_role" {
-  name = "TOE_EC2_Role-${data.aws_region.current.name}"
+  name = "INF_EC2_Role-${data.aws_region.current.name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -108,32 +107,14 @@ resource "aws_iam_role" "eks_creator_role" {
   })
 }
 
-# EKS 클러스터 생성을 위한 필수 권한 부여
-# Note: 이 정책들은 클러스터 생성에 필요한 거의 모든 권한을 포함하므로 주의해야 합니다.
 resource "aws_iam_role_policy_attachment" "eks_creator_policy_cluster" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   role       = aws_iam_role.eks_creator_role.name
 }
 
-# EC2 인스턴스에 IAM Role을 연결하기 위한 Instance Profile
 resource "aws_iam_instance_profile" "eks_creator_profile" {
-  name = "TOE_EC2_INST_Profile-${data.aws_region.current.name}"
+  name = "INF_EC2_INST_Profile-${data.aws_region.current.name}"
   role = aws_iam_role.eks_creator_role.name
-}
-
-
-
-# ------------------------------------------------
-# Graviton / X86 EC2 인스턴스 구성
-# ------------------------------------------------
-
-data "aws_ami" "al2023_arm64" {
-  most_recent = true
-  owners      = ["amazon"]
-  filter {
-    name   = "name"
-    values = ["al2023-ami-*-kernel-6.1-arm64"]
-  }
 }
 
 data "aws_ami" "al2023_x86_64" {
@@ -145,7 +126,6 @@ data "aws_ami" "al2023_x86_64" {
     values = ["al2023-ami-2023.*-kernel-6.1-x86_64"]
   }
 }
-
 
 resource "aws_security_group" "instance_sg" {
   vpc_id = aws_vpc.main.id
@@ -194,9 +174,9 @@ resource "aws_instance" "x86_box" {
   # IAM Instance Profile 연결 <--- EC2에 권한을 부여합니다.
   iam_instance_profile = aws_iam_instance_profile.eks_creator_profile.name
 
-  // 루트 볼륨 크기를 30GB 로 설정
+  // 루트 볼륨 크기를 100 GB 로 설정
   root_block_device {
-    volume_size = 30 # GiB 단위
+    volume_size = 100 # GiB 단위
     volume_type = "gp3" # 최신 gp3 볼륨 타입 사용
   }
 
