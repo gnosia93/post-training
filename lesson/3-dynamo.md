@@ -21,7 +21,10 @@ NVIDIA Dynamo는 Triton Inference Server의 후속 기술로 대규모 데이터
 |관계|	요청 관리자 (Backend로 TRT 사용)|	실제 연산 최적화기|
 
 
+![](https://github.com/gnosia93/interence-on-eks/blob/main/lesson/images/nvidia-dynamo-2.png)
+
 
 ## 레퍼런스 ##
 
 * [Microservices Communication with NATS](https://www.geeksforgeeks.org/advance-java/microservices-communication-with-nats/)
+
