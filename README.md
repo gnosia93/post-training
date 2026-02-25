@@ -1,5 +1,5 @@
 
-* [1. EKS 클러스터 생성하기]
+* [1. EKS 클러스터 생성하기](https://github.com/gnosia93/infer-on-eks/blob/main/lesson/1-eks-install.md)
  
 * [2. Quantization](https://github.com/gnosia93/post-training/blob/main/lesson/2-quantization.md)
 
