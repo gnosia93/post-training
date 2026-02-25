@@ -9,7 +9,7 @@
   - [로컬 Docker 배포하기](https://github.com/gnosia93/interence-on-eks/blob/main/lesson/4-dynamo-docker.md) 
   - [EKS 배포하기](https://github.com/gnosia93/interence-on-eks/blob/main/lesson/4-dynamo-eks.md) 
 
-* [5. Quantization](https://github.com/gnosia93/post-training/blob/main/lesson/5-quantization.md)
+* [5. Post Training](https://github.com/gnosia93/infer-on-eks/blob/main/lesson/5-post-training.md)
   - 모델 성능 테스트하기 
   - 인퍼런스 성능 테스트
 
