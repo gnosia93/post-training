@@ -24,7 +24,7 @@ code-server-graviton 코드 서버에 웹으로 접속한 후, 터미널을 열�
  
 #### 1. kubectl 설치 #### 
 ```
-ARCH=arm64     
+ARCH=amd64     
 curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.3/2025-08-03/bin/linux/$ARCH/kubectl
 chmod +x ./kubectl
 mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
@@ -35,7 +35,7 @@ kubectl version --client
 
 #### 2. eksctl 설치 ####
 ```
-ARCH=arm64    
+ARCH=amd64    
 PLATFORM=$(uname -s)_$ARCH
 curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
 
@@ -85,7 +85,7 @@ go 컴파일 과정에서 다소 시간이 소요된다.
 ```
 export AWS_REGION=$(aws ec2 describe-availability-zones --query 'AvailabilityZones[0].RegionName' --output text)
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-export CLUSTER_NAME="training-on-eks"
+export CLUSTER_NAME="infer-on-eks"
 export K8S_VERSION="1.34"
 export KARPENTER_VERSION="1.8.1"
 export VPC_ID=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values="${CLUSTER_NAME}" --query "Vpcs[].VpcId" --output text)
