@@ -18,12 +18,39 @@
 git clone https://github.com/coder/code-server
 cd code-server
 
+# GPU 리소스 요청
+resources:
+  requests:
+    nvidia.com/gpu: 1
+  limits:
+    nvidia.com/gpu: 1
+
+# GPU 노드 선택
+nodeSelector:
+  nvidia.com/gpu: "true"
+
+# Taint 처리 (필요시)
+tolerations:
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule
+
+
 # 2. LoadBalancer + 비밀번호 설정
 helm upgrade --install code-server ci/helm-chart \
   --set service.type=LoadBalancer \
   --set extraArgs="{--auth,password}" \
   --set-string extraEnvVars[0].name=PASSWORD \
   --set-string extraEnvVars[0].value="yourpassword"
+
+# GPU 설정으로 설치
+helm install vscode-gpu ci/helm-chart \
+  -f vscode-gpu-simple.yaml \
+  --namespace vscode \
+  --create-namespace
+
+kubectl exec -n vscode -it $(kubectl get pod -n vscode -o jsonpath='{.items[0].metadata.name}') -- nvidia-smi
+
 ```
 
 
