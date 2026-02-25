@@ -11,7 +11,7 @@
 
 * [5. Quantization](https://github.com/gnosia93/post-training/blob/main/lesson/2-quantization.md)
   - 모델 성능 테스트하기 
-  - 인프런스 성능 테스트
+  - 인퍼런스 성능 테스트
 
 
 ```
