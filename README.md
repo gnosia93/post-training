@@ -6,7 +6,6 @@
 * [5. 모델 Quntization 성능 테스트하기] 
 
 
-* [Nvidia Dynamo](https://github.com/gnosia93/post-training/blob/main/lesson/4-dynamo.md)
 
 
 
