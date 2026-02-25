@@ -1,6 +1,8 @@
 
 * [1. EKS 생성하기](https://github.com/gnosia93/infer-on-eks/blob/main/lesson/1-create-eks.md)
 
+* [2. GPU 노드풀 생성]()
+
 * [2. TensorRT-LLM](https://github.com/gnosia93/infer-on-eks/blob/main/lesson/2-tensorrt-llm.md)
    
 * [3. NVIDIA Dyanmo](https://github.com/gnosia93/post-training/blob/main/lesson/3-dynamo.md)
