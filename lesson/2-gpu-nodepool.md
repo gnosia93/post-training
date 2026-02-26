@@ -2,7 +2,7 @@
 
 쿠버네티스는 CPU 및 메모리 같은 일반적인 리소스만 관리할 수 있고, GPU의 존재에 대해서는 알지 못한다.
 Nvidia 디바이스 플러그인은 각 노드의 GPU를 감지하고, GPU에 대한 정보를 쿠버네티스 컨트롤 플레인에게 전달한다.
-디바이스 플러그인은 GPU 드라이버 및 NVIDIA 컨테이너 런타임(예: nvidia-container-runtime)과 연동하여, 컨테이너가 호스트의 GPU 하드웨어에 직접 접근할 수 있도록  해준다.
+디바이스 플러그인은 GPU 드라이버 및 NVIDIA 컨테이너 런타임(예: nvidia-container-runtime)과 연동하여, 컨테이너가 호스트의 GPU 하드웨어에 직접 접근할 수 있도록 해준다.
 
 ```
 helm repo add nvdp https://nvidia.github.io/k8s-device-plugin
@@ -76,7 +76,7 @@ kind: EC2NodeClass
 metadata:
   name: gpu
 spec:
-  role: "eksctl-KarpenterNodeRole-training-on-eks"
+  role: "eksctl-KarpenterNodeRole-${CLUSTER_NAME}"
   amiSelectorTerms:
     # Required; when coupled with a pod that requests NVIDIA GPUs or AWS Neuron
     # devices, Karpenter will select the correct AL2023 accelerated AMI variant
@@ -86,10 +86,10 @@ spec:
     - alias: al2023@latest
   subnetSelectorTerms:
     - tags:
-        karpenter.sh/discovery: "training-on-eks" 
+        karpenter.sh/discovery: "${CLUSTER_NAME}" 
   securityGroupSelectorTerms:
     - tags:
-        karpenter.sh/discovery: "training-on-eks" 
+        karpenter.sh/discovery: "${CLUSTER_NAME}" 
   blockDeviceMappings:
     - deviceName: /dev/xvda
       ebs:
